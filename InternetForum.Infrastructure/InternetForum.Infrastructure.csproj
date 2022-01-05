@@ -4,4 +4,24 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands" />
+    <Folder Include="DTO" />
+    <Folder Include="Repositories" />
+    <Folder Include="Services" />
+    <Folder Include="Repository\" />
+    <Folder Include="Service\" />
+    <Folder Include="DTO\" />
+    <Folder Include="Command\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InternetForum.Core\InternetForum.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Repository\" />
+    <None Remove="Service\" />
+    <None Remove="DTO\" />
+    <None Remove="Command\" />
+  </ItemGroup>
 </Project>

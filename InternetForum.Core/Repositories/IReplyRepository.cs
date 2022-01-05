@@ -5,7 +5,7 @@ using InternetForum.Core.Domain;
 
 namespace InternetForum.Core.Repositories
 {
-    public interface ICommentRepository
+    public interface IReplyRepository
     {
         Task AddAsync(Reply reply);
         Task UpdateAsync(Reply reply);

@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography.X509Certificates;
 
 namespace InternetForum.Core.Domain
 {
     public class UserDetails
     {
+        [ForeignKey("User")]
         public int Id { get; set; }
         public String Email { get; set; }
         public String Nickname { get; set; }

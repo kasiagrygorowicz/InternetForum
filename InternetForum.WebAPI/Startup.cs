@@ -26,6 +26,22 @@ namespace InternetForum.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
+            services.AddScoped<IUserDetailsService, UserDetailsService>();
+
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IPostService, PostService>();
+
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<ICommentService, CommentService>();
+
+            
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+                Configuration.GetConnectionString("ForumConnectionString")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
