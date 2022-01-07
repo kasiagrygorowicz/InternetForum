@@ -9,6 +9,7 @@ namespace InternetForum.Core.Domain
         public IEnumerable<Post> Posts  {get; set;}
         public IEnumerable<Reply> Replies  {get; set;}
         public UserDetails UserDetails { get; set; }
+        
 
         public User()
         {

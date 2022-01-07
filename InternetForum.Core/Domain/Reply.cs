@@ -9,5 +9,12 @@ namespace InternetForum.Core.Domain
         public String Content { get; set; }
         public User Author { get; set; }
         public Post Post { get; set; }
+
+        public Reply()
+        {
+            Posted = DateTime.Now;
+        }
     }
+
+   
 }

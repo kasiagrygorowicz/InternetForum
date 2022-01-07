@@ -12,6 +12,7 @@ namespace InternetForum.Core.Repositories
         Task<IEnumerable<User>> BrowseAllAsync();
         Task<User> GetAsyncByEmail(string email);
         Task<User> GetAsyncById(int id);
+        Task<User> GetAsyncByUserDetailsId(int id);
         
     }
 }

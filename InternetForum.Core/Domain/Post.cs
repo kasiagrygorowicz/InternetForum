@@ -16,6 +16,7 @@ namespace InternetForum.Core.Domain
         public Post()
         {
             Replies = new List<Reply>();
+            Posted = DateTime.Now;
         }
     }
 }

@@ -8,14 +8,20 @@ namespace InternetForum.Core.Domain
 {
     public class UserDetails
     {
-        [ForeignKey("User")]
+       
         public int Id { get; set; }
-        public String Email { get; set; }
-        public String Nickname { get; set; }
         public User User { get; set; }
+        public int User_Id { get; set; }
         // Date of creating the account 
         public DateTime Date { get; set; }
         public DateTime Birthday { get; set; }
-       
+
+
+        public UserDetails()
+        {
+            Date = DateTime.Now;
+        }
     }
+
+    
 }

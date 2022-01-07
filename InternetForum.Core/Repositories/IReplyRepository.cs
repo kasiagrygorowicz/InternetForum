@@ -14,6 +14,7 @@ namespace InternetForum.Core.Repositories
         //Task<IEnumerable<Reply>> BrowseAllAsync();
         //id belongs to post
         Task<IEnumerable<Reply>> BrowseAllAsyncByPostId(int id);
-        Task<IEnumerable<Reply>> BrowseAllAsyncByUserId(int id);  
+        Task<IEnumerable<Reply>> BrowseAllAsyncByUserId(int id);
+
     }
 }
