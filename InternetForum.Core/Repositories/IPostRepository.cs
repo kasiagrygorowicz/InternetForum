@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using InternetForum.Core.Domain;
@@ -11,7 +12,7 @@ namespace InternetForum.Core.Repositories
         Task DelAsync(Post post);
         Task UpdateAsync(Post post);
         Task<IEnumerable<Post>> BrowseAllAsync();
-        Task<IEnumerable<Post>> BrowseAllAsyncByUser(int id);
+        Task<IEnumerable<Post>> BrowseAllAsyncByUser(String id);
         Task<Post> GetAsync(int id);
        
         

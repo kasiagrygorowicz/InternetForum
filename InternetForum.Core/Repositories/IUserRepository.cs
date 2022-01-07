@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using InternetForum.Core.Domain;
@@ -11,7 +12,7 @@ namespace InternetForum.Core.Repositories
         Task UpdateAsync(User user);
         Task<IEnumerable<User>> BrowseAllAsync();
         Task<User> GetAsyncByEmail(string email);
-        Task<User> GetAsyncById(int id);
+        Task<User> GetAsyncById(String id);
         Task<User> GetAsyncByUserDetailsId(int id);
         
     }

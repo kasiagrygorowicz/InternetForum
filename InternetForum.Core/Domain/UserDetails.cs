@@ -11,7 +11,7 @@ namespace InternetForum.Core.Domain
        
         public int Id { get; set; }
         public User User { get; set; }
-        public int User_Id { get; set; }
+        public String User_Id { get; set; }
         // Date of creating the account 
         public DateTime Date { get; set; }
         public DateTime Birthday { get; set; }
