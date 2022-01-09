@@ -1,0 +1,57 @@
+﻿@model IEnumerable<WebApp.Models.PostMV>
+
+<p>
+    <a asp-action="Create"><button class="btn btn-primary">Add new post</button></a>
+</p>
+@{
+    if (!User.Identity.IsAuthenticated)
+    {
+        <i>Login to add, edit and delte posts !!!</i>
+    }
+}
+<div>
+    @foreach (var item in Model)
+    {
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5>
+                <div class="d-flex justify-content-between">
+                    <h6 class="card-subtitle mb-2 text-muted"> @Html.DisplayFor(modelItem => item.AuthorNickname)</h6>
+                    <h6 class="card-subtitle mb-2 text-muted"> @Html.DisplayFor(modelItem => item.Posted)</h6>
+                </div>
+                <p class="card-text">   @Html.DisplayFor(modelItem => item.Description)</p>
+                @*@Html.ActionLink("Replies", "", "Reply", new { id = item.Id })*@
+                <a href="<%: Url.Action(" Replies", "" , "Reply" , new { id=item.Id }) %>
+                    <button type="button" class="btn btn-primary">Show Replies</button>
+                </a>
+
+                @{
+                    if (User.Identity.Name == item.AuthorNickname || User.IsInRole("admin"))
+                    {
+                        @*<a href="<%: Url.Action("Edit", "Edit", new { id = item.Id }) %>
+                    <button type="button" class="btn btn-primary">Edit Post</button>
+                </a>
+                <a href="<%: Url.Action("Delete", "Delete", new { id = item.Id }) %>
+                    <button type="button" class="btn btn-primary">Delete Post</button>
+                </a>*@
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) @:
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+
+                         <button class="btn btn-primary" type="button" onclick="location.href='@Url.ActionLink("Edit", "Edit", new { id = item.Id })'">
+                            Edit post
+                        </button>
+                        <button class="btn btn-primary" type="button" onclick="location.href='@Url.ActionLink("Delete", "Delete", new { id = item.Id })'">
+                            Delete post
+                        </button>
+
+                    }
+                }
+            </div>
+        </div>
+        <br>
+
+
+    }
+</div>
+
