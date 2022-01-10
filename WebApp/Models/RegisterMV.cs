@@ -17,6 +17,10 @@ namespace WebApp.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-       
+        [Required]
+        [Display(Name = "Birthday")]
+        public DateTime Birthday { get; set; }
+
+
     }
 }

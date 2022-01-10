@@ -70,6 +70,7 @@ namespace InternetForum.Infrastructure.Service
         public async Task UpdateAsync(EditUserDetails details, int id)
         {
             var d = MapEditUserDetailsToUserDetails(id, details);
+          
             await _userDetailsRepository.UpdateAsync(d);
         }
 

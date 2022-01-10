@@ -18,12 +18,22 @@ namespace InternetForum.Infrastructure.Repository
             //one to one
             modelBuilder.Entity<User>().HasOne(k => k.UserDetails).WithOne(m => m.User).HasForeignKey<UserDetails>(n => n.User_Id);
 
-            //one to many
+            //one to many - post
             modelBuilder.Entity<User>().HasMany(k => k.Posts).WithOne(m => m.Author);
 
-            //many to one
+            //many to one - post
             modelBuilder.Entity<Post>().HasOne(k => k.Author).WithMany(m => m.Posts);
+
+            //one to many - reply
+            modelBuilder.Entity<User>().HasMany(k => k.Replies).WithOne(m => m.Author);
+
+            //many to one - reply
+            modelBuilder.Entity<Reply>().HasOne(k => k.Author).WithMany(m => m.Replies);
+
+
         }
+
+
 
         public DbSet<Reply> Reply { get; set; }
         public DbSet<Post> Post { get; set; }

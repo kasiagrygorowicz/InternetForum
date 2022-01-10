@@ -101,7 +101,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Create(int id)
         {
             CreateReplyMV s = new CreateReplyMV();
@@ -110,7 +110,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Create(CreateReplyMV s)
         {
             string _restpath = GetHostUrl().Content + CN();
@@ -142,9 +142,10 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Delete(int id)
         {
+            Console.Write("\n\n"+id+"\n\n");
             string _restpath = GetHostUrl().Content + CN();
             var tokenString = GenerateJSONWebToken();
 

@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace InternetForum.WebAPI.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route("[Controller]")]
-    public class UserDeatilsController : Controller
+    public class UserDetailsController : Controller
     {
         private IUserDetailsService _userDetailsService;
-        public UserDeatilsController(IUserDetailsService userDetailsServiceervice)
+        public UserDetailsController(IUserDetailsService userDetailsServiceervice)
         {
             _userDetailsService = userDetailsServiceervice;
         }
@@ -50,9 +50,10 @@ namespace InternetForum.WebAPI.Controllers
         
 
         [HttpPut("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> EditUserDetails([FromBody] EditUserDetails user, int id)
         {
+          
             await _userDetailsService.UpdateAsync( user,id);
             return NoContent();
         }

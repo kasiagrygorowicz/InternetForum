@@ -67,6 +67,7 @@ namespace WebApp.Controllers
                 {
                     var user = new User() { UserName = r.Username, Email=r.Email };
                     user.UserDetails = new UserDetails();
+                    user.UserDetails.Birthday = r.Birthday;
                 var result = await _userManager.CreateAsync(user, r.Password);
                     if (result.Succeeded)
                     {

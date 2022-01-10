@@ -7,28 +7,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InternetForum.WebAPI.Controllers
 {
-    public class ReplyController
-    {
+  
         [Microsoft.AspNetCore.Components.Route("[Controller]")]
-        public class CommentController : Controller
+        public class ReplyController : Controller
         {
             private readonly IReplyService _replyService;
-            public CommentController(IReplyService replyService)
+            public ReplyController(IReplyService replyService)
             {
                 _replyService = replyService;
             }
 
             [HttpPost]
-            [Authorize]
+            //[Authorize]
             public async Task<IActionResult> AddReply([FromBody] CreateReply reply)
             {
                 await _replyService.AddAsync(reply);
-                return Created("Reply created", reply);
+                return Created("", reply);
             }
 
 
             [HttpDelete("{id}")]
-            [Authorize]
+            //[Authorize]
             public async Task<IActionResult> DeleteReply(int id)
             {
                 await _replyService.DelAsync(id);
@@ -43,7 +42,7 @@ namespace InternetForum.WebAPI.Controllers
 
 
 
-            [HttpGet("/comment/post/{id}")]
+            [HttpGet("/reply/post/{id}")]
             public async Task<IActionResult> BrowseAllReplies(int id)
             {
                 return Json(await _replyService.BrowseAllByPostId(id));
@@ -52,7 +51,7 @@ namespace InternetForum.WebAPI.Controllers
         
 
             [HttpPut("{id}")]
-            [Authorize]
+            //[Authorize]
             public async Task<IActionResult> EditReply([FromBody] EditReply reply, int id)
             {
                 await _replyService.UpdateAsync(reply,id);
@@ -61,5 +60,5 @@ namespace InternetForum.WebAPI.Controllers
 
            
         }
-    }
+    
 }

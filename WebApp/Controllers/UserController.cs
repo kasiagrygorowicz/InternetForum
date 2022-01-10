@@ -50,31 +50,36 @@ namespace WebApp.Controllers
             }
 
             [HttpGet]
-            [Authorize]
+            //[Authorize]
             public async Task<IActionResult> Edit(int id)
             {
-                string _restpath = GetHostUrl().Content + "UserDetails";
-
-                UserDetailsMV s = new UserDetailsMV();
+                string _restpath = GetHostUrl().Content + "userdetails";
+            Console.Write("--------------");
+            Console.Write(id);
+            Console.Write("--------------");
+            UserDetailsMV s = new UserDetailsMV();
                 using (var httpClient = new HttpClient())
                 {
                     using (var response = await httpClient.GetAsync($"{_restpath}/{id}"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
-                        s = JsonConvert.DeserializeObject<UserDetailsMV>(apiResponse);
+                    Console.Write("--------------");
+                    Console.Write(apiResponse);
+                    Console.Write("--------------");
+                    s = JsonConvert.DeserializeObject<UserDetailsMV>(apiResponse);
                     }
                 }
                 return View(s);
             }
 
             [HttpPost]
-            [Authorize]
+            //[Authorize]
             public async Task<IActionResult> Edit(EditUserDetailsMV u)
             {
-                string _restpath = GetHostUrl().Content + "userinfo";
+                string _restpath = GetHostUrl().Content + "userdetails";
                 var tokenString = GenerateJSONWebToken();
 
-            EditUserDetailsMV result = new EditUserDetailsMV();
+            UserDetailsMV result = new UserDetailsMV();
                 try
                 {
                     using (var httpClient = new HttpClient())
@@ -84,8 +89,12 @@ namespace WebApp.Controllers
                         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString);
                         using (var response = await httpClient.PutAsync($"{_restpath}/{u.Id}", content))
                         {
-                            string apiResponse = await response.Content.ReadAsStringAsync();
-                            result = JsonConvert.DeserializeObject<EditUserDetailsMV>(apiResponse);
+                        Console.Write("First !!!!!!!!!!!!!1");
+                        Console.Write(response);
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        Console.Write("Secont !!!!!!!!!!!!!1");
+                        Console.Write(apiResponse);
+                            result = JsonConvert.DeserializeObject<UserDetailsMV>(apiResponse);
                         }
                     }
                 }

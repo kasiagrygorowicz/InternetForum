@@ -35,8 +35,8 @@ namespace InternetForum.Infrastructure.Repository
         {
             return await Task.FromResult(
                 _appDbContext.UserDetails
-                .Include(user => user.User)
-                .Include(user => user.Id));
+                .Include(user => user.User));
+               
         }
 
         public async Task DelAsync(UserDetails userDetails)
@@ -56,7 +56,7 @@ namespace InternetForum.Infrastructure.Repository
 
             public async Task<UserDetails> GetAsync(int id)
         {
-            return await Task.FromResult(_appDbContext.UserDetails.Include(u => u.User).FirstOrDefault(u => u.Id == id));
+            return await Task.FromResult(_appDbContext.UserDetails.FirstOrDefault(u => u.Id == id));
         }
 
         public async Task UpdateAsync(UserDetails userDetails)
@@ -67,6 +67,11 @@ namespace InternetForum.Infrastructure.Repository
                     .Include(ud => ud.User)
                     .FirstOrDefault(u => u.Id == userDetails.Id);
 
+                oldUserDetails.Birthday = userDetails.Birthday;
+
+
+
+                _appDbContext.SaveChanges();
             }
             catch (Exception e)
             {

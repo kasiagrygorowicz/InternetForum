@@ -14,9 +14,9 @@ namespace InternetForum.Infrastructure.Service
         private readonly IUserRepository _userRepository;
         private readonly IPostRepository _postRepository;
 
-        public ReplyService(IReplyRepository commentRepository, IPostRepository postRepository, IUserRepository userRepository)
+        public ReplyService(IReplyRepository replyRepository, IPostRepository postRepository, IUserRepository userRepository)
         {
-            _replyRepository = commentRepository;
+            _replyRepository = replyRepository;
             _postRepository = postRepository;
             _userRepository = userRepository;
            
@@ -52,7 +52,7 @@ namespace InternetForum.Infrastructure.Service
                 Posted = reply.Posted,
                 Content = reply.Content,
                 AuthorUsername = reply.Author.UserName
-
+                
             };
     
 
@@ -66,6 +66,9 @@ namespace InternetForum.Infrastructure.Service
 
         public  async Task DelAsync(int id)
         {
+            Console.Write("/n/n");
+            Console.Write(id);
+            Console.Write("/n/n");
             var r =  _replyRepository.GetAsync(id).Result;
             await _replyRepository.DelAsync(r);
         }

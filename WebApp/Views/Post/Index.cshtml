@@ -21,10 +21,10 @@
                     <h6 class="card-subtitle mb-2 text-muted"> @Html.DisplayFor(modelItem => item.Posted)</h6>
                 </div>
                 <p class="card-text">   @Html.DisplayFor(modelItem => item.Description)</p>
-                @*@Html.ActionLink("Replies", "", "Reply", new { id = item.Id })*@
-                <a href="<%: Url.Action(" Replies", "" , "Reply" , new { id=item.Id }) %>
+                @Html.ActionLink("Replies", "", "Reply", new { id = item.Id })
+                @*<a href="<%: Url.Action(" Replies", "" , "Reply" , new { id=item.Id }) %>
                     <button type="button" class="btn btn-primary">Show Replies</button>
-                </a>
+                </a>*@
 
                 @{
                     if (User.Identity.Name == item.AuthorNickname || User.IsInRole("admin"))

@@ -12,6 +12,8 @@
     <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
     <None Remove="Views\Account\" />
     <None Remove="Views\Post\" />
+    <None Remove="Views\Reply\" />
+    <None Remove="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0">
@@ -30,5 +32,7 @@
   <ItemGroup>
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Post\" />
+    <Folder Include="Views\Reply\" />
+    <Folder Include="Views\User\" />
   </ItemGroup>
 </Project>
