@@ -46,14 +46,22 @@ namespace InternetForum.Infrastructure.Service
 
         private ReplyDTO MapReplyToReplyDTO(Reply reply)
         {
-            return new ReplyDTO()
+            if (reply != null)
             {
-                Id = reply.Id,
-                Posted = reply.Posted,
-                Content = reply.Content,
-                AuthorUsername = reply.Author.UserName
-                
-            };
+                return new ReplyDTO()
+                {
+                    Id = reply.Id,
+                    Posted = reply.Posted,
+                    Content = reply.Content,
+                    AuthorUsername = reply.Author.UserName,
+                    PostId = reply.Post.Id
+
+                };
+            }
+            else
+            {
+                return null;
+            }
     
 
         }

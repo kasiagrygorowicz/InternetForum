@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InternetForum.WebAPI.Controllers
 {
   
-        [Microsoft.AspNetCore.Components.Route("[Controller]")]
+        [Microsoft.AspNetCore.Mvc.Route("[Controller]")]
         public class ReplyController : Controller
         {
             private readonly IReplyService _replyService;
@@ -21,7 +21,10 @@ namespace InternetForum.WebAPI.Controllers
             //[Authorize]
             public async Task<IActionResult> AddReply([FromBody] CreateReply reply)
             {
-                await _replyService.AddAsync(reply);
+            Console.Write(reply.Author);
+            Console.Write(reply.Post);
+            Console.Write(reply.Content);
+            await _replyService.AddAsync(reply);
                 return Created("", reply);
             }
 

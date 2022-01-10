@@ -53,12 +53,15 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Edit(int id)
+        //[Authorize]
+        public async Task<IActionResult> Edit(int id, int post)
         {
+            Console.Write("\n\n" + post + "\n\n");
             string _restpath = GetHostUrl().Content + CN();
 
             ReplyMV s = new ReplyMV();
+            s.PostId = post;
+           
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync($"{_restpath}/{id}"))
@@ -71,9 +74,10 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Edit(EditReplyMV p)
+        //[Authorize]
+        public async Task<IActionResult> Edit(EditReplyMV p,int post)
         {
+            Console.Write("\n\n" + post + "\n\n");
             string _restpath = GetHostUrl().Content + CN();
             var tokenString = GenerateJSONWebToken();
 
@@ -97,7 +101,7 @@ namespace WebApp.Controllers
                 return View(ex);
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id = post });
         }
 
         [HttpGet]
@@ -138,14 +142,14 @@ namespace WebApp.Controllers
                 return View(ex);
             }
 
-            return RedirectToAction(nameof(Index), new { id = s.Post });
+            return RedirectToAction(nameof(Index),new { id = s.Post });
         }
 
         [HttpGet]
         //[Authorize]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id,int post)
         {
-            Console.Write("\n\n"+id+"\n\n");
+           
             string _restpath = GetHostUrl().Content + CN();
             var tokenString = GenerateJSONWebToken();
 
@@ -167,7 +171,7 @@ namespace WebApp.Controllers
                 return View(ex);
             }
 
-            return RedirectToAction(nameof(Index)/*, new { postId }*/);
+            return RedirectToAction(nameof(Index), new { id=post });
         }
 
         private string GenerateJSONWebToken()

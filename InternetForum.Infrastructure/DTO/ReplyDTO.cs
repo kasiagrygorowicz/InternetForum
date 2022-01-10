@@ -8,5 +8,6 @@ namespace InternetForum.Infrastructure.Service
         public DateTime Posted { get; set; }
         public String Content { get; set; }
         public String AuthorUsername { get; set; }
+        public int PostId { get; set; }
     }
 }
