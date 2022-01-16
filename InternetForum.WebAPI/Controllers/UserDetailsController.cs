@@ -50,7 +50,7 @@ namespace InternetForum.WebAPI.Controllers
         
 
         [HttpPut("{id}")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> EditUserDetails([FromBody] EditUserDetails user, int id)
         {
           

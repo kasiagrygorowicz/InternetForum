@@ -53,33 +53,38 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
-        public async Task<IActionResult> Edit(int id, int post)
+        [Authorize]
+        public async Task<IActionResult> Edit(int post)
         {
-            Console.Write("\n\n" + post + "\n\n");
+            Console.Write("\n\npost" + post + "\n\n");
+           
             string _restpath = GetHostUrl().Content + CN();
 
             ReplyMV s = new ReplyMV();
             s.PostId = post;
            
+
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync($"{_restpath}/{id}"))
+                using (var response = await httpClient.GetAsync($"{_restpath}/{post}"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     s = JsonConvert.DeserializeObject<ReplyMV>(apiResponse);
+                    
                 }
             }
             return View(s);
         }
 
         [HttpPost]
-        //[Authorize]
-        public async Task<IActionResult> Edit(EditReplyMV p,int post)
+        [Authorize]
+        public async Task<IActionResult> Edit(EditReplyMV p)
         {
-            Console.Write("\n\n" + post + "\n\n");
+          
             string _restpath = GetHostUrl().Content + CN();
             var tokenString = GenerateJSONWebToken();
+            var id = 0;
+          
 
             ReplyMV result = new ReplyMV();
             try
@@ -87,6 +92,7 @@ namespace WebApp.Controllers
                 using (var httpClient = new HttpClient())
                 {
                     string jsonString = System.Text.Json.JsonSerializer.Serialize(p);
+                    Console.Write(jsonString);
                     var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString);
                     using (var response = await httpClient.PutAsync($"{_restpath}/{p.Id}", content))
@@ -94,18 +100,25 @@ namespace WebApp.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         result = JsonConvert.DeserializeObject<ReplyMV>(apiResponse);
                     }
+
+                    using (var response = await httpClient.GetAsync($"{_restpath}/{p.Id}"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        result = JsonConvert.DeserializeObject<ReplyMV>(apiResponse);
+                        id = result.PostId;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 return View(ex);
             }
-
-            return RedirectToAction(nameof(Index), new { id = post });
+          
+            return RedirectToAction("Index",new { id=id });
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Create(int id)
         {
             CreateReplyMV s = new CreateReplyMV();
@@ -114,7 +127,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Create(CreateReplyMV s)
         {
             string _restpath = GetHostUrl().Content + CN();
@@ -146,7 +159,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Delete(int id,int post)
         {
            
@@ -176,7 +189,7 @@ namespace WebApp.Controllers
 
         private string GenerateJSONWebToken()
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo111222"));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo123123123"));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
@@ -187,7 +200,7 @@ namespace WebApp.Controllers
 
             var token = new JwtSecurityToken(
                 issuer: "https://localhost:5001/",
-                audience: "https://localhost:44300/",
+                audience: "https://localhost:50001/",
                 expires: DateTime.Now.AddHours(2),
                 signingCredentials: credentials,
                 claims: claims

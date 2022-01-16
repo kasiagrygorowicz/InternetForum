@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using WebApp.Models;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace WebApp.Controllers
 {
@@ -68,7 +69,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Edit(EditPostMV p)
         {
             string _restpath = GetHostUrl().Content + CN();
@@ -81,6 +82,9 @@ namespace WebApp.Controllers
                 {
                     string jsonString = System.Text.Json.JsonSerializer.Serialize(p);
                     var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    Console.Write("\n");
+                    Console.Write(jsonString);
+                    Console.Write("\n");
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString);
                     using (var response = await httpClient.PutAsync($"{_restpath}/{p.Id}", content))
                     {
@@ -168,7 +172,7 @@ namespace WebApp.Controllers
 
         private string GenerateJSONWebToken()
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo111222333"));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo123123123"));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
@@ -179,7 +183,7 @@ namespace WebApp.Controllers
 
             var token = new JwtSecurityToken(
                 issuer: "https://localhost:5001/",
-                audience: "https://localhost:44300/",
+                audience: "https://localhost:50001/",
                 expires: DateTime.Now.AddHours(2),
                 signingCredentials: credentials,
                 claims: claims

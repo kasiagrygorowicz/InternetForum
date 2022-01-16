@@ -79,7 +79,7 @@ namespace InternetForum.Infrastructure.Service
             {
                 Id = id,
                 Posted = oldPost.Posted,
-                Title = oldPost.Title,
+                Title = post.Title,
                 Author = oldPost.Author,
                 Description = post.Description
 

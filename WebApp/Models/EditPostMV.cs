@@ -4,6 +4,7 @@ namespace WebApp.Models
     public class EditPostMV
     {
         public String Description { get; set; }
-        public object Id { get; internal set; }
+        public String Title { get; set; }
+        public String Id { get; set; }
     }
 }

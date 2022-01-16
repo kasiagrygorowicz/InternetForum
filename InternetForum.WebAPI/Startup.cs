@@ -63,13 +63,13 @@ namespace InternetForum.WebAPI
             {
                 options.SaveToken = true;
                 options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new TokenValidationParameters()
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = "https://localhost:44396",
-                    ValidIssuer = "https://localhost:5001",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo111222333"))
+                    ValidAudience = "https://localhost:50001/",
+                    ValidIssuer = "https://localhost:5001/",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo123123123"))
                 };
 
             });

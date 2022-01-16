@@ -74,8 +74,9 @@ namespace InternetForum.Infrastructure.Repository
             {
                 var oldPost = _appDbContext.Post
                     .FirstOrDefault(p => p.Id == post.Id);
-
+                Console.Write(post);
                 oldPost.Description = post.Description;
+                oldPost.Title = post.Title;
                 _appDbContext.SaveChanges();
             }
             catch (Exception e)

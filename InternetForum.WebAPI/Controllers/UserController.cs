@@ -17,7 +17,7 @@ namespace InternetForum.WebAPI.Controllers
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> AddUser([FromBody] CreateUser user)
         {
             await _userService.AddAsync(user);
@@ -25,7 +25,7 @@ namespace InternetForum.WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> DeleteUser(string id)
         {
             await _userService.DelAsync(id);
@@ -47,7 +47,7 @@ namespace InternetForum.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> EditUser([FromBody] EditUser editedUser, string id)
         {
             await _userService.UpdateAsync(editedUser,id);

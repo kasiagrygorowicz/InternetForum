@@ -50,22 +50,17 @@ namespace WebApp.Controllers
             }
 
             [HttpGet]
-            //[Authorize]
+            [Authorize]
             public async Task<IActionResult> Edit(int id)
             {
-                string _restpath = GetHostUrl().Content + "userdetails";
-            Console.Write("--------------");
-            Console.Write(id);
-            Console.Write("--------------");
+               string _restpath = GetHostUrl().Content + "userdetails";
+           
             UserDetailsMV s = new UserDetailsMV();
                 using (var httpClient = new HttpClient())
                 {
                     using (var response = await httpClient.GetAsync($"{_restpath}/{id}"))
                     {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                    Console.Write("--------------");
-                    Console.Write(apiResponse);
-                    Console.Write("--------------");
+                    string apiResponse = await response.Content.ReadAsStringAsync();
                     s = JsonConvert.DeserializeObject<UserDetailsMV>(apiResponse);
                     }
                 }
@@ -73,7 +68,7 @@ namespace WebApp.Controllers
             }
 
             [HttpPost]
-            //[Authorize]
+            [Authorize]
             public async Task<IActionResult> Edit(EditUserDetailsMV u)
             {
                 string _restpath = GetHostUrl().Content + "userdetails";
@@ -108,7 +103,7 @@ namespace WebApp.Controllers
 
             private string GenerateJSONWebToken()
             {
-                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo111222333"));
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo123123123"));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
                 var claims = new[]
@@ -119,7 +114,7 @@ namespace WebApp.Controllers
 
                 var token = new JwtSecurityToken(
                     issuer: "https://localhost:5001/",
-                    audience: "https://localhost:44300/",
+                    audience: "https://localhost:50001/",
                     expires: DateTime.Now.AddHours(2),
                     signingCredentials: credentials,
                     claims: claims
