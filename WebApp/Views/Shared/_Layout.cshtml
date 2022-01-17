@@ -23,77 +23,78 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+
 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Index">Posts</a>
                         </li>
 
                         <li class="nav-item">
-
-
-
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Sign up</a>
-
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Lista Użytkowników</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
                         </li>
 
 
 
-                        @* Wylogowanie, Zalogowanie, Zalogowany user *@
-
-                        @if (SignInManager.IsSignedIn(User))
-
-                        {
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Account
-                                </a>
-
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    @*@Html.ActionLink("Edit", "Change account details", new { id = User.Identities. });*@
-                                    <form class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout" id="logoutForm" method="post" class="navbar-right">
-
-                                        <a href="javascript:document.getElementById('logoutForm').submit()">Sign out</a>
-
-                                    </form>
-
-
-
-                                </div>
-                            </li>
-
-                            <li class="nav-link text-dark">
-
-
-
-                                Welcome <h3>@User.Identity.Name</h3>
-
-                            </li>
-
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Sign in</a>
-
-                            </li>
-                        }
 
 
                     </ul>
 
+
+
                 </div>
             </div>
+
+            @if (SignInManager.IsSignedIn(User))
+
+            {
+
+                <div class="nav-item dropdown  topnav-right">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Account
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @*@Html.ActionLink("Edit", "Change account details", new { id = User.Identities. });*@
+                        <form class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout" id="logoutForm" method="post" class="navbar-right">
+
+                            <a href="javascript:document.getElementById('logoutForm').submit()">Sign out</a>
+
+                        </form>
+
+
+
+
+                    </div>
+                </div>
+                <div class="nav-link text-dark topnav-right">
+
+
+
+                    Welcome <h3>@User.Identity.Name</h3>
+
+                </div>
+
+
+
+
+            }
+            else
+            {
+                <div class="nav-item topnav-right">
+
+                    <a class="nav-link text-primary" asp-area="" asp-controller="Account" asp-action="Login">Sign in</a>
+
+                </div>
+
+                <div class="nav-item">
+
+                    <a class="nav-link text-danger" asp-area="" asp-controller="Account" asp-action="Register">Sign up</a>
+
+                </div>
+            }
+
+
+
         </nav>
     </header>
     <div class="container">

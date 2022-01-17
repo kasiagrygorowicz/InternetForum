@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using InternetForum.Core.Domain;
+using InternetForum.WebApp.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Index()
         {
             string _restpath = GetHostUrl().Content + CN();
-            var tokenString = GenerateJSONWebToken();
+            var tokenString = Utils.GenerateJSONWebToken();
 
             List<PostMV> postsList = new List<PostMV>();
 
@@ -56,40 +57,37 @@ namespace WebApp.Controllers
         {
             string _restpath = GetHostUrl().Content + CN();
 
-            PostMV s = new PostMV();
+            PostMV post = new PostMV();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync($"{_restpath}/{id}"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    s = JsonConvert.DeserializeObject<PostMV>(apiResponse);
+                    post = JsonConvert.DeserializeObject<PostMV>(apiResponse);
                 }
             }
-            return View(s);
+            return View(post);
         }
 
         [HttpPost]
         //[Authorize]
-        public async Task<IActionResult> Edit(EditPostMV p)
+        public async Task<IActionResult> Edit(EditPostMV post)
         {
             string _restpath = GetHostUrl().Content + CN();
-            var tokenString = GenerateJSONWebToken();
+            var tokenString = Utils.GenerateJSONWebToken();
 
-            PostMV result = new PostMV();
+            PostMV r = new PostMV();
             try
             {
                 using (var httpClient = new HttpClient())
                 {
-                    string jsonString = System.Text.Json.JsonSerializer.Serialize(p);
+                    string jsonString = System.Text.Json.JsonSerializer.Serialize(post);
                     var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-                    Console.Write("\n");
-                    Console.Write(jsonString);
-                    Console.Write("\n");
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString);
-                    using (var response = await httpClient.PutAsync($"{_restpath}/{p.Id}", content))
+                    using (var response = await httpClient.PutAsync($"{_restpath}/{post.Id}", content))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
-                        result = JsonConvert.DeserializeObject<PostMV>(apiResponse);
+                        r = JsonConvert.DeserializeObject<PostMV>(apiResponse);
                     }
                 }
             }
@@ -114,7 +112,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Create(CreatePostMV s)
         {
             string _restpath = GetHostUrl().Content + CN();
-            var tokenString = GenerateJSONWebToken();
+            var tokenString = Utils.GenerateJSONWebToken();
 
             s.Author = _userManager.GetUserAsync(HttpContext.User).Result.Id;
            
@@ -147,7 +145,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             string _restpath = GetHostUrl().Content + CN();
-            var tokenString = GenerateJSONWebToken();
+            var tokenString = Utils.GenerateJSONWebToken();
          
             PostMV result = new PostMV();
             try
@@ -170,27 +168,7 @@ namespace WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private string GenerateJSONWebToken()
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo123123123"));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim("Name", "Kasia"),
-                new Claim(JwtRegisteredClaimNames.Email, "01153047@pw.edu.pl")
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: "https://localhost:5001/",
-                audience: "https://localhost:50001/",
-                expires: DateTime.Now.AddHours(2),
-                signingCredentials: credentials,
-                claims: claims
-                );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        
 
         private ContentResult GetHostUrl()
         {

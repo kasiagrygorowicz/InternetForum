@@ -69,7 +69,7 @@ namespace InternetForum.WebAPI
                     ValidateAudience = true,
                     ValidAudience = "https://localhost:50001/",
                     ValidIssuer = "https://localhost:5001/",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo123123123"))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo111222333"))
                 };
 
             });

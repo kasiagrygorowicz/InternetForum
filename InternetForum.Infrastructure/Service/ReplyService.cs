@@ -11,8 +11,8 @@ namespace InternetForum.Infrastructure.Service
     public class ReplyService : IReplyService
     {
         private readonly IReplyRepository _replyRepository;
-        private readonly IUserRepository _userRepository;
         private readonly IPostRepository _postRepository;
+        private readonly IUserRepository _userRepository;
 
         public ReplyService(IReplyRepository replyRepository, IPostRepository postRepository, IUserRepository userRepository)
         {
@@ -24,7 +24,8 @@ namespace InternetForum.Infrastructure.Service
 
         public async Task AddAsync(CreateReply reply)
         {
-            await _replyRepository.AddAsync(MapCreateReplyToReply(reply));
+            Reply r = MapCreateReplyToReply(reply);
+            await _replyRepository.AddAsync(r); 
         }
 
         private Reply MapCreateReplyToReply(CreateReply reply)
@@ -68,15 +69,13 @@ namespace InternetForum.Infrastructure.Service
 
         public async Task<IEnumerable<ReplyDTO>> BrowseAllByUserId(String id)
         {
+
             var r = await _replyRepository.BrowseAllAsyncByUserId(id);
             return r.Select(reply => MapReplyToReplyDTO(reply));
         }
 
         public  async Task DelAsync(int id)
-        {
-            Console.Write("/n/n");
-            Console.Write(id);
-            Console.Write("/n/n");
+        { 
             var r =  _replyRepository.GetAsync(id).Result;
             await _replyRepository.DelAsync(r);
         }

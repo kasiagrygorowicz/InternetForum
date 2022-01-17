@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using InternetForum.Core.Domain;
+using InternetForum.WebApp.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Index(int id)
         {
             string _restpath = GetHostUrl().Content + CN();
-            var tokenString = GenerateJSONWebToken();
+            var tokenString = Utils.GenerateJSONWebToken();
 
             List<ReplyMV> commentsList = new List<ReplyMV>();
 
@@ -80,11 +81,11 @@ namespace WebApp.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(EditReplyMV p)
         {
-          
+
             string _restpath = GetHostUrl().Content + CN();
-            var tokenString = GenerateJSONWebToken();
+            var tokenString = Utils.GenerateJSONWebToken();
             var id = 0;
-          
+
 
             ReplyMV result = new ReplyMV();
             try
@@ -100,7 +101,7 @@ namespace WebApp.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         result = JsonConvert.DeserializeObject<ReplyMV>(apiResponse);
                     }
-
+                    
                     using (var response = await httpClient.GetAsync($"{_restpath}/{p.Id}"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -113,8 +114,8 @@ namespace WebApp.Controllers
             {
                 return View(ex);
             }
-          
-            return RedirectToAction("Index",new { id=id });
+
+            return RedirectToAction("Index", new { id = id });
         }
 
         [HttpGet]
@@ -123,6 +124,7 @@ namespace WebApp.Controllers
         {
             CreateReplyMV s = new CreateReplyMV();
             s.Post = id;
+            Console.Write("\n\n" + s.Post + "\n\n");
             return await Task.Run(() => View(s));
         }
 
@@ -131,9 +133,10 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Create(CreateReplyMV s)
         {
             string _restpath = GetHostUrl().Content + CN();
-            var tokenString = GenerateJSONWebToken();
+            var tokenString = Utils.GenerateJSONWebToken();
 
             s.Author = _userManager.GetUserAsync(HttpContext.User).Result.Id;
+            Console.Write("\n\n" + s.Post + "\n\n");
 
             ReplyMV result = new ReplyMV();
             try
@@ -148,6 +151,7 @@ namespace WebApp.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         result = JsonConvert.DeserializeObject<ReplyMV>(apiResponse);
                     }
+
                 }
             }
             catch (Exception ex)
@@ -164,7 +168,7 @@ namespace WebApp.Controllers
         {
            
             string _restpath = GetHostUrl().Content + CN();
-            var tokenString = GenerateJSONWebToken();
+            var tokenString = Utils.GenerateJSONWebToken();
 
             ReplyMV result = new ReplyMV();
             try
@@ -187,27 +191,7 @@ namespace WebApp.Controllers
             return RedirectToAction(nameof(Index), new { id=post });
         }
 
-        private string GenerateJSONWebToken()
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo123123123"));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim("Name", "Kasia"),
-                new Claim(JwtRegisteredClaimNames.Email, "01153047@pw.edu.pl")
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: "https://localhost:5001/",
-                audience: "https://localhost:50001/",
-                expires: DateTime.Now.AddHours(2),
-                signingCredentials: credentials,
-                claims: claims
-                );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+       
 
         private ContentResult GetHostUrl()
         {

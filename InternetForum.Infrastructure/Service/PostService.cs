@@ -63,13 +63,18 @@ namespace InternetForum.Infrastructure.Service
 
         public async Task<PostDTO> GetAsync(int id)
         {
-            return   MapPostToPostDTO( _postRepository.GetAsync(id).Result);
+
+            return await Task.Run(() =>
+            {
+                return MapPostToPostDTO(_postRepository.GetAsync(id).Result);
+            });
+           
         }
 
         public async Task UpdateAsync(EditPost post, int id)
         {
             Post p = MapEditPostToPost(id, post);
-            await _postRepository.UpdateAsync(p);
+            await _postRepository.UpdateAsync(MapEditPostToPost(id, post));
         }
 
         private Post MapEditPostToPost(int id, EditPost post)

@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using InternetForum.Core.Domain;
+using InternetForum.WebApp.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +33,7 @@ namespace WebApp.Controllers
             public async Task<IActionResult> Index()
             {
                 string _restpath = GetHostUrl().Content + CN();
-                var tokenString = GenerateJSONWebToken();
+                var tokenString = Utils.GenerateJSONWebToken();
 
                 List<UserMV> usersList = new List<UserMV>();
 
@@ -72,7 +73,7 @@ namespace WebApp.Controllers
             public async Task<IActionResult> Edit(EditUserDetailsMV u)
             {
                 string _restpath = GetHostUrl().Content + "userdetails";
-                var tokenString = GenerateJSONWebToken();
+                var tokenString = Utils.GenerateJSONWebToken();
 
             UserDetailsMV result = new UserDetailsMV();
                 try
@@ -84,11 +85,9 @@ namespace WebApp.Controllers
                         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString);
                         using (var response = await httpClient.PutAsync($"{_restpath}/{u.Id}", content))
                         {
-                        Console.Write("First !!!!!!!!!!!!!1");
-                        Console.Write(response);
+                        
                         string apiResponse = await response.Content.ReadAsStringAsync();
-                        Console.Write("Secont !!!!!!!!!!!!!1");
-                        Console.Write(apiResponse);
+                     
                             result = JsonConvert.DeserializeObject<UserDetailsMV>(apiResponse);
                         }
                     }
@@ -101,27 +100,7 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            private string GenerateJSONWebToken()
-            {
-                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo123123123"));
-                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-                var claims = new[]
-                {
-                new Claim("Name", "Kasia"),
-                new Claim(JwtRegisteredClaimNames.Email, "01153047@pw.edu.pl")
-            };
-
-                var token = new JwtSecurityToken(
-                    issuer: "https://localhost:5001/",
-                    audience: "https://localhost:50001/",
-                    expires: DateTime.Now.AddHours(2),
-                    signingCredentials: credentials,
-                    claims: claims
-                    );
-
-                return new JwtSecurityTokenHandler().WriteToken(token);
-            }
+         
 
         private ContentResult GetHostUrl()
         {

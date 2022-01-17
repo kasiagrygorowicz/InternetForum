@@ -1,0 +1,50 @@
+﻿@model IEnumerable<WebApp.Models.UserMV>
+
+@{
+    if (!User.Identity.IsAuthenticated)
+    {
+        <i>Tylko zalogowany użytkownik może edytować swoje dane</i>
+    }
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Birthday)
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Birthday)
+                </td>
+               
+                <td>
+                    @{
+                        if (User.Identity.Name == item.Username || User.IsInRole("admin"))
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.DetailsId });
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

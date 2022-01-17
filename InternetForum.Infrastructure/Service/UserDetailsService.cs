@@ -50,7 +50,7 @@ namespace InternetForum.Infrastructure.Service
 
                 Id = details.Id,
                 Date = details.Date,
-                Birthday = details.Birthday,
+                Birthday = details.Birthday.ToString("MM/dd/yyyy"),
                 UserId = details.User_Id
             };
         }

@@ -24,6 +24,9 @@ namespace InternetForum.Infrastructure.Repository
             //many to one - post
             modelBuilder.Entity<Post>().HasOne(k => k.Author).WithMany(m => m.Posts);
 
+            //many to one - post
+            modelBuilder.Entity<Post>().HasMany(k => k.Replies).WithOne(m => m.Post).OnDelete(DeleteBehavior.Cascade); ;
+
             //one to many - reply
             modelBuilder.Entity<User>().HasMany(k => k.Replies).WithOne(m => m.Author);
 

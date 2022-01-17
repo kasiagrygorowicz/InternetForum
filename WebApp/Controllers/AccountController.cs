@@ -40,11 +40,11 @@ namespace WebApp.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Post");
                     }
                 }
 
-                ModelState.AddModelError("", "Niepoprawna nazwa użytkownika lub hasło...");
+                ModelState.AddModelError("", "Wrong username or password");
                 return View(loginVM);
             }
 
@@ -63,7 +63,7 @@ namespace WebApp.Controllers
             public async Task<IActionResult> Register(RegisterMV r)
 
             {
-                if (ModelState.IsValid) //wprowadzone wartości logowania zgodne z walidacją; ModelState-model predefiniowany
+                if (ModelState.IsValid) 
                 {
                     var user = new User() { UserName = r.Username, Email=r.Email };
                     user.UserDetails = new UserDetails();
@@ -71,7 +71,7 @@ namespace WebApp.Controllers
                 var result = await _userManager.CreateAsync(user, r.Password);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Home"); //(metoda, controller)
+                        return RedirectToAction("Index", "Login"); //(metoda, controller)
                     }
                 }
 
@@ -83,7 +83,7 @@ namespace WebApp.Controllers
             public async Task<IActionResult> Logout()
             {
                 await _signInManager.SignOutAsync();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Post");
             }
         }
     

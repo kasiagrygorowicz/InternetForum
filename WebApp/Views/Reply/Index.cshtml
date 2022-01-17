@@ -1,0 +1,77 @@
+﻿@model IEnumerable<WebApp.Models.ReplyMV>
+
+
+<p>
+    <a asp-action="Create"><button class="btn btn-primary">Add reply</button></a>
+</p>
+@{
+    if (!User.Identity.IsAuthenticated)
+    {
+        <div  class="alert alert-warning">Log in to fully use application</div>
+    }
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuthorUsername)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Posted)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+      @{
+          if (Model != null)
+          {
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AuthorUsername)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Posted)
+                </td>
+                <td>
+                    @{
+                        if (User.Identity.Name == item.AuthorUsername)
+                        {
+
+                            <a href="@Url.Action("Edit", "Reply", new { id = item.Id })">
+                                <button type="button" class="btn btn-primary">Edit Reply</button>
+                            </a>
+                            <a href="@Url.Action("Delete", "Reply", new { id = item.Id })">
+                                <button type="button" class="btn btn-primary">Delete Reply</button>
+                            </a>
+                        }
+                        if (User.IsInRole("admin"))
+                        {
+                            <a href="@Url.Action("Delete", "Reply", new { id = item.Id })">
+                                <button type="button" class="btn btn-primary">Delete Reply</button>
+                            </a>
+                        }
+                    }
+                </td>
+            </tr>
+                        }
+                            }
+                        }
+    </tbody>
+</table>
