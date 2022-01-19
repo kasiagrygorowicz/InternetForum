@@ -52,7 +52,7 @@ namespace InternetForum.Infrastructure.Service
                 return new ReplyDTO()
                 {
                     Id = reply.Id,
-                    Posted = reply.Posted,
+                    Posted = reply.Posted.ToString("MM/dd/yyyy"),
                     Content = reply.Content,
                     AuthorUsername = reply.Author.UserName,
                     PostId = reply.Post.Id

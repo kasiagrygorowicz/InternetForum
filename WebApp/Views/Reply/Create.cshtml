@@ -20,7 +20,9 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a href="@Url.Action("Index", "Reply", new { id = ViewBag.PostId })">
+        Cancel
+    </a>
 </div>
 
 @section Scripts {

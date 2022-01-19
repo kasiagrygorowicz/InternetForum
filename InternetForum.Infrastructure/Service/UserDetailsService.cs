@@ -49,7 +49,7 @@ namespace InternetForum.Infrastructure.Service
             {
 
                 Id = details.Id,
-                Date = details.Date,
+                Date = details.Date.ToString("MM/dd/yyyy"),
                 Birthday = details.Birthday.ToString("MM/dd/yyyy"),
                 UserId = details.User_Id
             };

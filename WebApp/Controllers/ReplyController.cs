@@ -35,8 +35,10 @@ namespace WebApp.Controllers
         {
             string _restpath = GetHostUrl().Content + CN();
             var tokenString = Utils.GenerateJSONWebToken();
+            var x = GetHostUrl().Content;
+            PostMV tmp;
 
-            List<ReplyMV> commentsList = new List<ReplyMV>();
+            List<ReplyMV> replies = new List<ReplyMV>();
 
             using (var httpClient = new HttpClient())
             {
@@ -44,36 +46,62 @@ namespace WebApp.Controllers
                 using (var response = await httpClient.GetAsync($"{_restpath}/post/{id}"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    commentsList = JsonConvert.DeserializeObject<List<ReplyMV>>(apiResponse);
+                    replies = JsonConvert.DeserializeObject<List<ReplyMV>>(apiResponse);
                 }
+
+                if (x != null)
+                {
+                    using (var response = await httpClient.GetAsync($"{x}post/{id}"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        tmp = JsonConvert.DeserializeObject<PostMV>(apiResponse);
+
+
+
+                        if (tmp != null)
+                        {
+
+
+                            ViewBag.PostId = id;
+                            ViewBag.User = tmp.AuthorNickname;
+                            ViewBag.Description = tmp.Description;
+                            ViewBag.Date = tmp.Posted;
+                            ViewBag.Title = tmp.Title;
+                        }
+
+                    }
+                }
+
             }
 
-            ViewBag.PostId = id;
+           
 
-            return View(commentsList);
+
+            return View(replies);
         }
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Edit(int post)
+        public async Task<IActionResult> Edit(int id)
         {
-            Console.Write("\n\npost" + post + "\n\n");
            
+            Console.Write("\n\n"+id+"\n\n");
             string _restpath = GetHostUrl().Content + CN();
 
             ReplyMV s = new ReplyMV();
-            s.PostId = post;
+            //s.PostId = post;
            
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync($"{_restpath}/{post}"))
+                using (var response = await httpClient.GetAsync($"{_restpath}/{id}"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     s = JsonConvert.DeserializeObject<ReplyMV>(apiResponse);
-                    
+                    ViewBag.PostId = s.PostId;
                 }
             }
+           
             return View(s);
         }
 
@@ -105,6 +133,7 @@ namespace WebApp.Controllers
                     using (var response = await httpClient.GetAsync($"{_restpath}/{p.Id}"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
+               
                         result = JsonConvert.DeserializeObject<ReplyMV>(apiResponse);
                         id = result.PostId;
                     }
@@ -124,7 +153,7 @@ namespace WebApp.Controllers
         {
             CreateReplyMV s = new CreateReplyMV();
             s.Post = id;
-            Console.Write("\n\n" + s.Post + "\n\n");
+            ViewBag.PostId = id;
             return await Task.Run(() => View(s));
         }
 
@@ -136,7 +165,7 @@ namespace WebApp.Controllers
             var tokenString = Utils.GenerateJSONWebToken();
 
             s.Author = _userManager.GetUserAsync(HttpContext.User).Result.Id;
-            Console.Write("\n\n" + s.Post + "\n\n");
+          
 
             ReplyMV result = new ReplyMV();
             try

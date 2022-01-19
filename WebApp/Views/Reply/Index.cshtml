@@ -1,77 +1,102 @@
 ﻿@model IEnumerable<WebApp.Models.ReplyMV>
 
 
-<p>
-    <a asp-action="Create"><button class="btn btn-primary">Add reply</button></a>
-</p>
-@{
-    if (!User.Identity.IsAuthenticated)
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+
+
+<div>
+
+    @if (!User.Identity.IsAuthenticated)
     {
-        <div  class="alert alert-warning">Log in to fully use application</div>
+
+
+        <div class="alert alert-warning" style="margin: 20px;">Log in to fully use application</div>
+        <a asp-controller="Post" asp-action="Index">
+            <button type="button" class="btn bg-primary text-white" style="margin-left: 20px;" asp-action="Index">Back to Posts</button>
+        </a>
     }
-}
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AuthorUsername)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Posted)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-      @{
-          if (Model != null)
-          {
+    else
+    {
+        <div class="flex-row">
+            <a asp-action="Create" asp-route-id="@ViewBag.PostId">
+                <button type="button" class=" p-2 btn bg-primary text-white" style="margin-left: 20px;">Add Reply</button>
+            </a>
 
+            <a asp-controller="Post" asp-action="Index">
+                <button type="button" class=" p-2 btn bg-primary text-white" asp-action="Index">Back to Posts</button>
+            </a>
 
-        @foreach (var item in Model)
+            
+        </div>
+    }
+
+    <div class="card bg-primary text-white" style="border-radius: 10px; margin: 20px;">
+        <div class="card-body">
+            <h4 class="card-title"> @ViewBag.Title</h4>
+            <div class="d-flex justify-content-between">
+                <h5 class="card-text mb-2 " style="color :black"> @ViewBag.User</h5>
+                <h5 class="card-text mb-2 " style="color :black"> @ViewBag.Date</h5>
+            </div>
+            <hr class="bg-white" />
+            <p class="card-text font-color-black">@ViewBag.Description</p>
+        </div>
+    </div>
+
+    @{
+        @if (Model != null)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AuthorUsername)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Content)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Posted)
-                </td>
-                <td>
-                    @{
-                        if (User.Identity.Name == item.AuthorUsername)
+
+
+            @foreach (var item in Model)
+            {
+
+                <div class="card border-primary " style="border-width: medium border-radius: 10px; margin-left: auto; margin-right: auto; margin-bottom: 10px; width: 95% ">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="card-text mb-2 text-black">  @Html.DisplayFor(modelItem => item.AuthorUsername)</h6>
+                            <h6 class="card-text mb-2 text-black">  Posted: @Html.DisplayFor(modelItem => item.Posted)</h6>
+                        </div>
+                        <hr class="bg-primary" />
+
+
+                        <p class="card-text font-color-black"> @Html.DisplayFor(modelItem => item.Content)</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                        @if (User.Identity.Name == item.AuthorUsername)
                         {
 
                             <a href="@Url.Action("Edit", "Reply", new { id = item.Id })">
-                                <button type="button" class="btn btn-primary">Edit Reply</button>
+                                <button type="button" class="btn bg-primary text-white">Edit Reply</button>
                             </a>
                             <a href="@Url.Action("Delete", "Reply", new { id = item.Id })">
-                                <button type="button" class="btn btn-primary">Delete Reply</button>
+                                <button type="button" class="btn bg-primary text-white">Delete Reply</button>
                             </a>
                         }
-                        if (User.IsInRole("admin"))
+                        @if (User.IsInRole("admin"))
                         {
                             <a href="@Url.Action("Delete", "Reply", new { id = item.Id })">
-                                <button type="button" class="btn btn-primary">Delete Reply</button>
+                                <button type="button" class="btn bg-primary text-white">Delete Reply</button>
                             </a>
                         }
-                    }
-                </td>
-            </tr>
-                        }
-                            }
-                        }
-    </tbody>
-</table>
+                    </div>
+                </div>
+
+            }
+        }
+
+    }
+
+</div>
+
+

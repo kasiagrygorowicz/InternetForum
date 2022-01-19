@@ -34,7 +34,7 @@ namespace InternetForum.Infrastructure.Service
                 Id = u.Id,
                 Username = u.UserName,
                 Email = u.Email,
-                Date = u.UserDetails.Date,
+                Date = u.UserDetails.Date.ToString("MM/dd/yyyy"),
                 Birthday = u.UserDetails.Birthday.ToString("MM/dd/yyyy"),
                 DetailsId = u.UserDetails.Id
             };

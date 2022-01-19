@@ -14,7 +14,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-primary border-bottom box-shadow mb-3 text-white">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebApp</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -26,11 +26,11 @@
 
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Index">Posts</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Post" asp-action="Index">Posts</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="User" asp-action="Index">Users</a>
                         </li>
 
 
@@ -44,22 +44,28 @@
                 </div>
             </div>
 
+          
+
             @if (SignInManager.IsSignedIn(User))
 
             {
 
                 <div class="nav-item dropdown  topnav-right">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Account
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @*@Html.ActionLink("Edit", "Change account details", new { id = User.Identities. });*@
+
                         <form class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout" id="logoutForm" method="post" class="navbar-right">
 
                             <a href="javascript:document.getElementById('logoutForm').submit()">Sign out</a>
 
+
+
                         </form>
+                        
+
 
 
 
@@ -74,17 +80,24 @@
 
                 </div>
 
-
+                
 
 
             }
             else
             {
-                <div class="nav-item topnav-right">
 
-                    <a class="nav-link text-primary" asp-area="" asp-controller="Account" asp-action="Login">Sign in</a>
+                @*<a asp-action="Create">
+                    <button type="button" class="btn bg-primary text-white" style="margin-left: auto; margin-right: auto;
+                        margin-bottom: 20px; align-self:stop;">
+                        Add Post
+                    </button>
+                </a>*@
+                <a class="nav-item topnav-right" asp-controller="Account" asp-action="Login">
 
-                </div>
+                    <button class="nav-link bg-white text-success" >Sign in</button>
+
+                </a>
 
                 <div class="nav-item">
 
@@ -103,9 +116,9 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer text-muted bg-primary">
+        <div class="container" style="color:white;">
+            &copy; 2022 - WebApp - <a style="color:white;" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

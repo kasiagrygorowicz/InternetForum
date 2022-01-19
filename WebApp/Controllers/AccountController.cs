@@ -26,20 +26,21 @@ namespace WebApp.Controllers
             public async Task<IActionResult> Login(LoginMV loginVM)
 
             {
-                if (!ModelState.IsValid) //blad logowania - nie bledne haslo jako niezgodne z walidacja
-
+                if (!ModelState.IsValid) 
                     return View(loginVM);
 
-                //zwraca name usera do zalogowania
+               
                 var user = await _userManager.FindByNameAsync(loginVM.Username);
+          
                 if (user != null)
 
                 {
-                    //logowanie
+                
 
                     var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
                     if (result.Succeeded)
                     {
+                        ViewBag.UserId = user.Id;
                         return RedirectToAction("Index", "Post");
                     }
                 }
