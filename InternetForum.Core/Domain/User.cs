@@ -5,11 +5,9 @@ namespace InternetForum.Core.Domain
 {
     public class User : IdentityUser
     {
-        //public int Id { get; set; }
         public IEnumerable<Post> Posts  {get; set;}
         public IEnumerable<Reply> Replies  {get; set;}
         public UserDetails UserDetails { get; set; }
-        
 
         public User()
         {

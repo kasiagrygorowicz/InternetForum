@@ -32,6 +32,7 @@ namespace InternetForum.WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetPost(int id)
         {
             var post = await _postService.GetAsync(id);
@@ -39,6 +40,7 @@ namespace InternetForum.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> BrowseAll()
         {
             var posts = await _postService.BrowseAll();

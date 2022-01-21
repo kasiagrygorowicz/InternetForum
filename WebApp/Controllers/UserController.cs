@@ -21,22 +21,20 @@ namespace WebApp.Controllers
    
         public class UserController : Controller
         {
-            public IConfiguration Configuration;
+            public IConfiguration _configuration;
             private readonly UserManager<User> _userManager;
             public UserController(IConfiguration configuration, UserManager<User> userManager)
             {
-                Configuration = configuration;
+                _configuration = configuration;
                 _userManager = userManager;
             }
 
 
             public async Task<IActionResult> Index()
             {
-                string _restpath = GetHostUrl().Content + CN();
                 var tokenString = Utils.GenerateJSONWebToken();
-
+                string _restpath = GetHostUrl().Content + CN();
                 List<UserMV> usersList = new List<UserMV>();
-
                 using (var httpClient = new HttpClient())
                 {
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString);
@@ -56,21 +54,21 @@ namespace WebApp.Controllers
             {
                string _restpath = GetHostUrl().Content + "userdetails";
            
-            UserDetailsMV s = new UserDetailsMV();
+            UserDetailsMV u = new UserDetailsMV();
                 using (var httpClient = new HttpClient())
                 {
                     using (var response = await httpClient.GetAsync($"{_restpath}/{id}"))
                     {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    s = JsonConvert.DeserializeObject<UserDetailsMV>(apiResponse);
+                    u = JsonConvert.DeserializeObject<UserDetailsMV>(apiResponse);
                     }
                 }
-                return View(s);
+                return View(u);
             }
 
             [HttpPost]
             [Authorize]
-            public async Task<IActionResult> Edit(EditUserDetailsMV u)
+            public async Task<IActionResult> Edit(EditUserDetailsMV details)
             {
                 string _restpath = GetHostUrl().Content + "userdetails";
                 var tokenString = Utils.GenerateJSONWebToken();
@@ -80,14 +78,13 @@ namespace WebApp.Controllers
                 {
                     using (var httpClient = new HttpClient())
                     {
-                        string jsonString = System.Text.Json.JsonSerializer.Serialize(u);
+                        string jsonString = System.Text.Json.JsonSerializer.Serialize(details);
                         var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
                         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString);
-                        using (var response = await httpClient.PutAsync($"{_restpath}/{u.Id}", content))
+                        using (var response = await httpClient.PutAsync($"{_restpath}/{details.Id}", content))
                         {
                         
                         string apiResponse = await response.Content.ReadAsStringAsync();
-                     
                             result = JsonConvert.DeserializeObject<UserDetailsMV>(apiResponse);
                         }
                     }
@@ -104,7 +101,7 @@ namespace WebApp.Controllers
 
         private ContentResult GetHostUrl()
         {
-            var result = Configuration["RestApiUrl:HostUrl"];
+            var result = _configuration["RestApiUrl:HostUrl"];
             return Content(result);
         }
 

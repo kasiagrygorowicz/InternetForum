@@ -28,7 +28,7 @@
 
     @if (User.Identity.Name == item.Username || User.IsInRole("admin"))
     {
-<div style="margin-right:20px; margin-bottom: 10px;">
+<div style="margin-left:20px; margin-bottom: 10px;">
     <a  class="text-primary" href="@Url.Action("Edit", "User", new { id = item.DetailsId })">
         <button type="button" class="btn bg-primary text-white">Edit Details</button>
     </a>

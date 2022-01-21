@@ -1,73 +1,62 @@
 ﻿@model IEnumerable<WebApp.Models.PostMV>
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <div>
+<div>
 
-        @if (!User.Identity.IsAuthenticated)
-        {
-            <div class="alert alert-warning" style="margin-left: auto; margin-right: auto;">Login to add, edit and delete posts !!!</div>
-        }
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="alert alert-warning" style="margin-left: auto; margin-right: auto;">Login to add, edit and delete posts !!!</div>
+    }
 
-        @if (User.Identity.IsAuthenticated)
-        {
-
-
-            <a asp-action="Create">
-                <button type="button" class="btn bg-primary text-white" style="margin-left: auto; margin-right: auto;
-                        margin-bottom: 20px; align-self:stop;">Add Post</button>
-            </a>
-        }
-        @foreach (var item in Model)
-        {
-            <a 
-               style="text-decoration :none;"
-               href="@Url.Action("Index", "Reply", new { id = item.Id })">
-                <div class="card border-primary " style="border-width:medium; border-radius: 10px;
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a asp-action="Create">
+            <button type="button" class="btn bg-primary text-white" style="margin-left: auto; margin-right: auto;
+                        margin-bottom: 20px; align-self:stop;">
+                Add Post
+            </button>
+        </a>
+    }
+    @foreach (var item in Model)
+    {
+        <a style="text-decoration :none;"
+           href="@Url.Action("Index", "Reply", new { id = item.Id })">
+            <div class="card border-primary " style="border-width:medium; border-radius: 10px;
                                 margin-left: auto; margin-right: auto;
                                 margin-bottom: 10px;width: 100%">
-                    <div class="card-body">
-                        <h3 class="card-title" style="color:black;"> @Html.DisplayFor(modelItem => item.Title)</h3>
-                        <div class="d-flex justify-content-between">
-                            <h6 class="card-text mb-2" style="color:black;"> @Html.DisplayFor(modelItem => item.AuthorNickname)</h6>
-                            <h6 class="card-text mb-2" style="color:black;"> @Html.DisplayFor(modelItem => item.Posted)</h6>
-                        </div>
-                        <hr class="bg-primary" />
-                        <p class="card-text" style="color:black;">   @Html.DisplayFor(modelItem => item.Description)</p>
+                <div class="card-body">
+                    <h3 class="card-title" style="color:black;"> @Html.DisplayFor(modelItem => item.Title)</h3>
+                    <div class="d-flex justify-content-between">
+                        <h6 class="card-text mb-2" style="color:black;"> @Html.DisplayFor(modelItem => item.AuthorNickname)</h6>
+                        <h6 class="card-text mb-2" style="color:black;"> @Html.DisplayFor(modelItem => item.Posted)</h6>
+                    </div>
+                    <hr class="bg-primary" />
+                    <p class="card-text" style="color:black;">   @Html.DisplayFor(modelItem => item.Description)</p>
 
+                    @{
+                        if (User.Identity.Name == item.AuthorNickname)
+                        {
+                            <a href="@Url.Action("Edit", "Post", new { id = item.Id })">
+                                <button type="button" class="btn bg-primary text-white">Edit Post</button>
+                            </a>
 
-
-
-                        @{
-                            if (User.Identity.Name == item.AuthorNickname)
-                            {
-                                <a href="@Url.Action("Edit", "Post", new { id = item.Id })">
-                                    <button type="button" class="btn bg-primary text-white">Edit Post</button>
-                                </a>
-
-                                if (!User.IsInRole("moderator"))
-                                {
-                                    <a href="@Url.Action("Delete", "Post", new { id = item.Id })">
-                                        <button type="button" class="btn bg-primary text-white">Delete Post</button>
-                                    </a>
-
-
-                                }
-
-                            }
-                            if (User.IsInRole("moderator"))
+                            if (!User.IsInRole("moderator"))
                             {
                                 <a href="@Url.Action("Delete", "Post", new { id = item.Id })">
                                     <button type="button" class="btn bg-primary text-white">Delete Post</button>
                                 </a>
                             }
                         }
-                    </div>
+                        if (User.IsInRole("moderator"))
+                        {
+                            <a href="@Url.Action("Delete", "Post", new { id = item.Id })">
+                                <button type="button" class="btn bg-primary text-white">Delete Post</button>
+                            </a>
+                        }
+                    }
                 </div>
-            </a>
-            <br>
-
-
-        }
-    </div>
+            </div>
+        </a>
+        <br>
+    }
+</div>
 

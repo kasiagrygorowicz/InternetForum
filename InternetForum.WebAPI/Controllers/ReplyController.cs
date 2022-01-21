@@ -21,9 +21,7 @@ namespace InternetForum.WebAPI.Controllers
             [Authorize]
             public async Task<IActionResult> AddReply([FromBody] CreateReply reply)
             {
-            Console.Write(reply.Author);
-            Console.Write(reply.Post);
-            Console.Write(reply.Content);
+            
             await _replyService.AddAsync(reply);
                 return Created("", reply);
             }

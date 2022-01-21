@@ -24,27 +24,22 @@ namespace WebApp.Controllers
             // GET
             [HttpPost]
             public async Task<IActionResult> Login(LoginMV loginVM)
-
             {
-                if (!ModelState.IsValid) 
-                    return View(loginVM);
-
-               
+                if (!ModelState.IsValid)
+            {
+                return View(loginVM);
+            }
                 var user = await _userManager.FindByNameAsync(loginVM.Username);
-          
                 if (user != null)
 
                 {
-                
-
-                    var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
-                    if (result.Succeeded)
+                    var r = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
+                    if (r.Succeeded)
                     {
                         ViewBag.UserId = user.Id;
                         return RedirectToAction("Index", "Post");
                     }
                 }
-
                 ModelState.AddModelError("", "Wrong username or password");
                 return View(loginVM);
             }
@@ -52,7 +47,10 @@ namespace WebApp.Controllers
             [HttpGet]
             public async Task<IActionResult> Register()
             {
-                return await Task.Run(() => { return View(new RegisterMV()); });
+                return await Task.Run(() =>
+                {
+                    return View(new RegisterMV());
+                });
             }
 
             [HttpGet]
@@ -62,7 +60,6 @@ namespace WebApp.Controllers
             }
             [HttpPost]
             public async Task<IActionResult> Register(RegisterMV r)
-
             {
                 if (ModelState.IsValid) 
                 {
@@ -72,7 +69,8 @@ namespace WebApp.Controllers
                 var result = await _userManager.CreateAsync(user, r.Password);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Login"); //(metoda, controller)
+                    await _userManager.AddToRoleAsync(user, "user");
+                    return RedirectToAction("Login", "Account"); 
                     }
                 }
 

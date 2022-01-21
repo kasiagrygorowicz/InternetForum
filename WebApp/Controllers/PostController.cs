@@ -33,10 +33,9 @@ namespace WebApp.Controllers
        
         public async Task<IActionResult> Index()
         {
-            string _restpath = GetHostUrl().Content + CN();
             var tokenString = Utils.GenerateJSONWebToken();
-
-            List<PostMV> postsList = new List<PostMV>();
+            string _restpath = GetHostUrl().Content + CN();
+            List<PostMV> posts = new List<PostMV>();
 
             using (var httpClient = new HttpClient())
             {
@@ -44,18 +43,94 @@ namespace WebApp.Controllers
                 using (var response = await httpClient.GetAsync(_restpath))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    postsList = JsonConvert.DeserializeObject<List<PostMV>>(apiResponse);
+                    posts = JsonConvert.DeserializeObject<List<PostMV>>(apiResponse);
                 }
             }
 
-            return View(postsList);
+            return View(posts);
         }
+        
+        
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var tokenString = Utils.GenerateJSONWebToken();
+            string _restpath = GetHostUrl().Content + CN();
+          
+         
+            PostMV r = new PostMV();
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString);
+                    using (var response = await httpClient.DeleteAsync($"{_restpath}/{id}"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        r = JsonConvert.DeserializeObject<PostMV>(apiResponse);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return View(ex);
+            }
+
+            return RedirectToAction(nameof(Index));
+            
+        }
+        
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Create()
+        {
+            CreatePostMV post = new CreatePostMV();
+            return await Task.Run(() => View(post));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Create(CreatePostMV post)
+        {
+            string _restpath = GetHostUrl().Content + CN();
+            var tokenString = Utils.GenerateJSONWebToken();
+            post.Author = _userManager.GetUserAsync(HttpContext.User).Result.Id;
+           
+
+            PostMV result = new PostMV();
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    string jsonString = System.Text.Json.JsonSerializer.Serialize(post);
+                    var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString);
+                    using (var response = await httpClient.PostAsync($"{_restpath}", content))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        result = JsonConvert.DeserializeObject<PostMV>(apiResponse);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return View(ex);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
 
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             string _restpath = GetHostUrl().Content + CN();
+
 
             PostMV post = new PostMV();
             using (var httpClient = new HttpClient())
@@ -99,75 +174,8 @@ namespace WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Create()
-        {
-            CreatePostMV s = new CreatePostMV();
-            return await Task.Run(() => View(s));
-        }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Create(CreatePostMV s)
-        {
-            string _restpath = GetHostUrl().Content + CN();
-            var tokenString = Utils.GenerateJSONWebToken();
-
-            s.Author = _userManager.GetUserAsync(HttpContext.User).Result.Id;
-           
-
-            PostMV result = new PostMV();
-            try
-            {
-                using (var httpClient = new HttpClient())
-                {
-                    string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
-                    var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString);
-                    using (var response = await httpClient.PostAsync($"{_restpath}", content))
-                    {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        result = JsonConvert.DeserializeObject<PostMV>(apiResponse);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return View(ex);
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Delete(int id)
-        {
-            string _restpath = GetHostUrl().Content + CN();
-            var tokenString = Utils.GenerateJSONWebToken();
-         
-            PostMV result = new PostMV();
-            try
-            {
-                using (var httpClient = new HttpClient())
-                {
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString);
-                    using (var response = await httpClient.DeleteAsync($"{_restpath}/{id}"))
-                    {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        result = JsonConvert.DeserializeObject<PostMV>(apiResponse);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return View(ex);
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
+       
+       
         
 
         private ContentResult GetHostUrl()

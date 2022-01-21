@@ -1,15 +1,9 @@
 ﻿@model IEnumerable<WebApp.Models.ReplyMV>
 
-
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-<link rel="stylesheet" href="~/css/site.css" />
-
-
 <div>
 
     @if (!User.Identity.IsAuthenticated)
     {
-
 
         <div class="alert alert-warning" style="margin: 20px;">Log in to fully use application</div>
         <a asp-controller="Post" asp-action="Index">
@@ -22,12 +16,9 @@
             <a asp-action="Create" asp-route-id="@ViewBag.PostId">
                 <button type="button" class=" p-2 btn bg-primary text-white" style="margin-left: 20px;">Add Reply</button>
             </a>
-
             <a asp-controller="Post" asp-action="Index">
                 <button type="button" class=" p-2 btn bg-primary text-white" asp-action="Index">Back to Posts</button>
             </a>
-
-            
         </div>
     }
 
@@ -46,8 +37,6 @@
     @{
         @if (Model != null)
         {
-
-
             @foreach (var item in Model)
             {
 
@@ -58,21 +47,7 @@
                             <h6 class="card-text mb-2 text-black">  Posted: @Html.DisplayFor(modelItem => item.Posted)</h6>
                         </div>
                         <hr class="bg-primary" />
-
-
                         <p class="card-text font-color-black"> @Html.DisplayFor(modelItem => item.Content)</p>
-
-
-
-
-
-
-
-
-
-
-
-
                         @if (User.Identity.Name == item.AuthorUsername)
                         {
 
@@ -83,7 +58,7 @@
                                 <button type="button" class="btn bg-primary text-white">Delete Reply</button>
                             </a>
                         }
-                        @if (User.IsInRole("admin"))
+                        @if (User.IsInRole("moderator"))
                         {
                             <a href="@Url.Action("Delete", "Reply", new { id = item.Id })">
                                 <button type="button" class="btn bg-primary text-white">Delete Reply</button>

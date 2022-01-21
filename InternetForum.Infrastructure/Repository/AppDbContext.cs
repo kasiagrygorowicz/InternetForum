@@ -37,11 +37,11 @@ namespace InternetForum.Infrastructure.Repository
         }
 
 
-
-        public DbSet<Reply> Reply { get; set; }
-        public DbSet<Post> Post { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<UserDetails> UserDetails { get; set; }
+        public DbSet<Reply> Reply { get; set; }
+        public DbSet<Post> Post { get; set; }
+        
         
         
        
